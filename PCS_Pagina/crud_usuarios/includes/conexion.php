@@ -1,12 +1,18 @@
 <?php
+// =====================================================================
+//  Conexión a la base de datos pcs_pagina
+//  Todos los archivos PHP del CRUD usan este archivo con require.
+// =====================================================================
+
 // Configuración por defecto de XAMPP
 $host    = 'localhost';
-$db      = 'PCS';
+$puerto  = '3306';          // Si tu MySQL de XAMPP usa otro puerto, cámbialo aquí
+$db      = 'pcs_pagina';
 $usuario = 'root';
-$clave   = '';          // XAMPP trae el usuario root sin contraseña
+$clave   = '';              // XAMPP trae el usuario root sin contraseña
 $charset = 'utf8mb4';
 
-$dsn = "mysql:host=$host;dbname=$db;charset=$charset";
+$dsn = "mysql:host=$host;port=$puerto;dbname=$db;charset=$charset";
 
 $opciones = [
     PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
@@ -17,5 +23,26 @@ $opciones = [
 try {
     $pdo = new PDO($dsn, $usuario, $clave, $opciones);
 } catch (PDOException $e) {
-    die('Error de conexión a la base de datos: ' . $e->getMessage());
+    // Mensaje claro según la causa más común
+    $detalle = $e->getMessage();
+
+    if (strpos($detalle, '1049') !== false) {
+        $ayuda = "La base de datos '{$db}' no existe todavía. Abre http://localhost/phpmyadmin, "
+               . "ve a la pestaña Importar y carga el archivo database/pcs_pagina.sql.";
+    } elseif (strpos($detalle, '2002') !== false || strpos($detalle, '2006') !== false) {
+        $ayuda = "No se pudo conectar con MySQL. Abre el panel de XAMPP y pulsa Start en MySQL "
+               . "(y revisa que el puerto sea $puerto).";
+    } elseif (strpos($detalle, '1045') !== false) {
+        $ayuda = "MySQL rechazó el usuario o la contraseña. Revisa \$usuario y \$clave en includes/conexion.php.";
+    } else {
+        $ayuda = 'No se pudo conectar con la base de datos.';
+    }
+
+    http_response_code(500);
+    require __DIR__ . '/header.php';
+    echo '<div class="errores"><strong>Error de conexión.</strong><br>'
+       . htmlspecialchars($ayuda)
+       . '<br><small>Detalle técnico: ' . htmlspecialchars($detalle) . '</small></div>';
+    require __DIR__ . '/footer.php';
+    exit;
 }

@@ -54,6 +54,15 @@ form.formulario { max-width: 480px; }
     color: #111111;
     font-size: 15px;
 }
-.campo input:focus { outline: 2px solid #111111; outline-offset: 1px; }
+.campo select {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #111111;
+    background: #ffffff;
+    color: #111111;
+    font-size: 15px;
+}
+.campo input:focus, .campo select:focus { outline: 2px solid #111111; outline-offset: 1px; }
+.ayuda { display: block; margin-top: 4px; color: #555555; font-size: 13px; }
 .botones { display: flex; gap: 10px; margin-top: 20px; }
 .vacio { padding: 20px; border: 1px dashed #111111; text-align: center; }
