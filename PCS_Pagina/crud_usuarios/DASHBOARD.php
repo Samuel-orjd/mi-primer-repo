@@ -32,8 +32,9 @@ require __DIR__ . '/includes/header.php';
 <section class="barra">
     <h2>Panel de control</h2>
     <div>
-        <a class="btn btn-claro" href="index.php">Gestionar usuarios</a>
-        <a class="btn" href="crear.php">Nuevo usuario</a>
+        <a class="btn btn-claro" href="index.php">Usuarios</a>
+        <a class="btn btn-claro" href="productos.php">Productos</a>
+        <a class="btn" href="crear_producto.php">Nuevo producto</a>
     </div>
 </section>
 
@@ -46,12 +47,12 @@ require __DIR__ . '/includes/header.php';
     <article class="tarjeta">
         <h3>Productos activos</h3>
         <p class="kpi"><?= $productosActivos ?></p>
-        <a class="enlace" href="#productos">Ver productos</a>
+        <a class="enlace" href="productos.php">Ver productos</a>
     </article>
     <article class="tarjeta">
         <h3>Stock bajo</h3>
         <p class="kpi"><?= $stockBajo ?></p>
-        <a class="enlace" href="#productos">Revisar inventario</a>
+        <a class="enlace" href="productos.php">Revisar inventario</a>
     </article>
     <article class="tarjeta">
         <h3>Pedidos pendientes</h3>
@@ -63,11 +64,11 @@ require __DIR__ . '/includes/header.php';
 <section id="productos">
     <div class="barra">
         <h2>Monitoreo de productos</h2>
-        <span class="ayuda">Acciones de edición disponibles al crear el CRUD de productos.</span>
+        <a class="btn btn-claro btn-sm" href="crear_producto.php">Nuevo producto</a>
     </div>
 
     <?php if (empty($productos)): ?>
-        <div class="vacio">No hay productos registrados todavía.</div>
+        <div class="vacio">No hay productos registrados todavía. Crea el primero con el botón «Nuevo producto».</div>
     <?php else: ?>
         <table>
             <thead>
@@ -109,7 +110,12 @@ require __DIR__ . '/includes/header.php';
                         <?php endif; ?>
                     </td>
                     <td class="acciones">
-                        <span class="btn btn-sm disabled" title="Disponible al crear el CRUD de productos">Editar</span>
+                        <a class="btn btn-claro btn-sm" href="editar_producto.php?id=<?= (int) $p['id_producto'] ?>">Editar</a>
+                        <form method="post" action="eliminar_producto.php"
+                              onsubmit="return confirm('¿Eliminar este producto?');">
+                            <input type="hidden" name="id" value="<?= (int) $p['id_producto'] ?>">
+                            <button type="submit" class="btn btn-sm">Eliminar</button>
+                        </form>
                     </td>
                 </tr>
             <?php endforeach; ?>
@@ -121,14 +127,28 @@ require __DIR__ . '/includes/header.php';
 <section id="consolas">
     <div class="barra">
         <h2>PCs y consolas en venta</h2>
+        <span class="ayuda">Reemplaza la ruta <code>src</code> de cada imagen por la tuya (200 x 200 px).</span>
     </div>
-    <div class="tarjetas">
-        <article class="tarjeta-producto">
-            <figure>
-                <img src="assets/img/placeholder.svg" alt="Ilustración de PC gamer" class="imagen-producto">
-                <figcaption>PC Gamer — próximamente</figcaption>
-            </figure>
-        </article>
+
+    <!-- Espacios listos para tus 2 imágenes de 200x200 -->
+    <div class="espacios-img">
+        <figure class="tarjeta-producto">
+            <!-- IMG 1: cambia src="assets/img/producto-1.svg" por tu imagen -->
+            <img class="imagen-producto"
+                 src="assets/img/producto-1.svg"
+                 width="200" height="200"
+                 alt="Imagen 1 del producto, 200 por 200 píxeles">
+            <figcaption>Imagen 1 — 200 x 200</figcaption>
+        </figure>
+
+        <figure class="tarjeta-producto">
+            <!-- IMG 2: cambia src="assets/img/producto-2.svg" por tu imagen -->
+            <img class="imagen-producto"
+                 src="assets/img/producto-2.svg"
+                 width="200" height="200"
+                 alt="Imagen 2 del producto, 200 por 200 píxeles">
+            <figcaption>Imagen 2 — 200 x 200</figcaption>
+        </figure>
     </div>
 </section>
 
