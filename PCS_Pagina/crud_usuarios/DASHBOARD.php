@@ -145,7 +145,7 @@ require __DIR__ . '/includes/header.php';
         <figure class="tarjeta-producto">
             <img class="imagen-producto"
                  src="assets/img/Pc_Gamer_Ryzen_7_8700_598911d6-450a-40d3-b7f8-6c2bc2fdb279.webp"
-                 width="200" height="200"
+                 width="120" height="120"
                  alt="PC Gamer Ryzen 7 8700">
             <figcaption>PC Gamer Ryzen 7 8700 </figcaption>
         </figure>
@@ -153,7 +153,7 @@ require __DIR__ . '/includes/header.php';
         <figure class="tarjeta-producto">
             <img class="imagen-producto"
                  src="assets/img/Chasis_Raidmax_i800_Infinito_Negro.webp"
-                 width="200" height="200"
+                 width="120" height="120"
                  alt="Chasis Raidmax i800 Infinito Negro">
             <figcaption>Chasis Raidmax i800 </figcaption>
         </figure>
@@ -161,7 +161,7 @@ require __DIR__ . '/includes/header.php';
         <figure class="tarjeta-producto">
             <img class="imagen-producto"
                  src="assets/img/BANNER-EQUIPO---CASE.webp"
-                 width="200" height="200"
+                 width="120" height="120"
                  alt="Banner equipo case">
             <figcaption>Banner equipo case </figcaption>
         </figure>

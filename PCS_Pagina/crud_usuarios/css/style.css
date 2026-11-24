@@ -61,10 +61,10 @@ h3 { margin: 0 0 8px; font-size: 15px; }
 .btn-sm { padding: 4px 10px; font-size: 13px; }
 .btn.disabled { opacity: 0.45; cursor: not-allowed; pointer-events: none; }
 
-table { width: 100%; border-collapse: collapse; background: var(--panel); box-shadow: var(--sombra); }
-th, td { border: 1px solid var(--borde); padding: 8px 10px; text-align: left; }
-th { background: var(--panel-2); color: var(--acento-hover); font-weight: 600; }
-td.acciones { white-space: nowrap; width: 1%; }
+table { width: 100%; table-layout: fixed; border-collapse: collapse; background: var(--panel); box-shadow: var(--sombra); font-size: 12px; }
+th, td { border: 1px solid var(--borde); padding: 4px 6px; text-align: left; vertical-align: top; overflow-wrap: anywhere; }
+th { background: var(--panel-2); color: var(--acento-hover); font-weight: 600; font-size: 11px; }
+td.acciones { white-space: normal; width: 1%; }
 td.acciones form { display: inline; }
 tbody tr:hover { background: var(--panel-2); }
 
@@ -158,32 +158,32 @@ section { margin-bottom: 32px; }
 
 .espacios-img {
     display: flex;
-    gap: 20px;
+    gap: 10px;
     flex-wrap: wrap;
 }
 .tarjeta-producto {
     border: 1px solid var(--borde);
     background: var(--panel);
-    padding: 12px;
+    padding: 8px;
     box-shadow: var(--sombra);
 }
 .tarjeta-producto figure { margin: 0; }
 .imagen-producto {
-    width: 200px;
-    height: 200px;
+    width: 120px;
+    height: 120px;
     object-fit: cover;
     display: block;
     background: var(--panel-2);
     border: 1px solid var(--borde);
 }
-.tarjeta-producto figcaption { margin-top: 8px; font-size: 13px; color: var(--texto-suave); }
+.tarjeta-producto figcaption { margin-top: 4px; font-size: 11px; color: var(--texto-suave); }
 
 .thumb {
-    width: 64px;
-    height: 64px;
+    width: 40px;
+    height: 40px;
     object-fit: cover;
     border: 1px solid var(--borde);
-    margin-right: 4px;
+    margin-right: 2px;
     background: var(--panel-2);
 }
 
@@ -192,6 +192,8 @@ code { color: var(--acento-hover); }
 @media (max-width: 600px) {
     .barra { flex-direction: column; align-items: flex-start; gap: 10px; }
     .nav { gap: 10px; }
-    .espacios-img { gap: 12px; }
-    .imagen-producto { width: 160px; height: 160px; }
+    .espacios-img { gap: 8px; }
+    .imagen-producto { width: 90px; height: 90px; }
+    th, td { padding: 3px 4px; font-size: 11px; }
+    .thumb { width: 32px; height: 32px; }
 }
