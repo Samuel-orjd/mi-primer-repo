@@ -179,8 +179,8 @@ section { margin-bottom: 32px; }
 .tarjeta-producto figcaption { margin-top: 8px; font-size: 13px; color: var(--texto-suave); }
 
 .thumb {
-    width: 48px;
-    height: 48px;
+    width: 64px;
+    height: 64px;
     object-fit: cover;
     border: 1px solid var(--borde);
     margin-right: 4px;

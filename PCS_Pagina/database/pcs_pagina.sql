@@ -192,3 +192,24 @@ INSERT IGNORE INTO usuarios (nombre, apellido, correo, contrasena_hash, telefono
 ('Laura',     'Gómez',    'laura.gomez@example.com',      '$2y$10$o3HyBWUyaYZhxu2R1Hqft.UQvvmI277YBZYb5PkncSz5C.qwdPvIS', '3001234567', 'administrador'),
 ('Andrés',    'Martínez', 'andres.martinez@example.com',  '$2y$10$o3HyBWUyaYZhxu2R1Hqft.UQvvmI277YBZYb5PkncSz5C.qwdPvIS', '3109876543', 'cliente'),
 ('Valentina', 'Rojas',    'valentina.rojas@example.com',  '$2y$10$o3HyBWUyaYZhxu2R1Hqft.UQvvmI277YBZYb5PkncSz5C.qwdPvIS', NULL,         'cliente');
+INSERT INTO productos (id_categoria, nombre, marca, precio, stock, activo)
+SELECT 2, 'PC Gamer Ryzen 7 8700', 'PCS', 1599.00, 4, 1
+WHERE NOT EXISTS (SELECT 1 FROM productos WHERE nombre = 'PC Gamer Ryzen 7 8700');
+
+INSERT INTO imagenes_producto (id_producto, url, orden)
+SELECT p.id_producto, 'assets/img/Pc_Gamer_Ryzen_7_8700_598911d6-450a-40d3-b7f8-6c2bc2fdb279.webp', 1
+FROM productos p
+WHERE p.nombre = 'PC Gamer Ryzen 7 8700'
+  AND NOT EXISTS (SELECT 1 FROM imagenes_producto i WHERE i.id_producto = p.id_producto AND i.url = 'assets/img/Pc_Gamer_Ryzen_7_8700_598911d6-450a-40d3-b7f8-6c2bc2fdb279.webp');
+
+INSERT INTO imagenes_producto (id_producto, url, orden)
+SELECT p.id_producto, 'assets/img/Chasis_Raidmax_i800_Infinito_Negro.webp', 2
+FROM productos p
+WHERE p.nombre = 'PC Gamer Ryzen 7 8700'
+  AND NOT EXISTS (SELECT 1 FROM imagenes_producto i WHERE i.id_producto = p.id_producto AND i.url = 'assets/img/Chasis_Raidmax_i800_Infinito_Negro.webp');
+
+INSERT INTO imagenes_producto (id_producto, url, orden)
+SELECT p.id_producto, 'assets/img/BANNER-EQUIPO---CASE.webp', 3
+FROM productos p
+WHERE p.nombre = 'PC Gamer Ryzen 7 8700'
+  AND NOT EXISTS (SELECT 1 FROM imagenes_producto i WHERE i.id_producto = p.id_producto AND i.url = 'assets/img/BANNER-EQUIPO---CASE.webp');

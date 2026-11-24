@@ -14,9 +14,13 @@ $productos = $pdo->query(
      ORDER BY p.stock ASC, p.id_producto DESC'
 )->fetchAll();
 
-$imagenesPorDefecto = ['assets/img/producto-1.svg', 'assets/img/producto-2.svg'];
+$imagenesPorDefecto = [
+    'assets/img/Pc_Gamer_Ryzen_7_8700_598911d6-450a-40d3-b7f8-6c2bc2fdb279.webp',
+    'assets/img/Chasis_Raidmax_i800_Infinito_Negro.webp',
+    'assets/img/BANNER-EQUIPO---CASE.webp',
+];
 foreach ($productos as &$p) {
-    $stmtImg = $pdo->prepare('SELECT url FROM imagenes_producto WHERE id_producto = :id ORDER BY orden, id_imagen LIMIT 2');
+    $stmtImg = $pdo->prepare('SELECT url FROM imagenes_producto WHERE id_producto = :id ORDER BY orden, id_imagen LIMIT 3');
     $stmtImg->execute([':id' => $p['id_producto']]);
     $p['imagenes'] = $stmtImg->fetchAll(PDO::FETCH_COLUMN) ?: $imagenesPorDefecto;
 }
@@ -136,18 +140,26 @@ require __DIR__ . '/includes/header.php';
     <div class="espacios-img">
         <figure class="tarjeta-producto">
             <img class="imagen-producto"
-                 src="assets/img/producto-1.svg"
+                 src="assets/img/Pc_Gamer_Ryzen_7_8700_598911d6-450a-40d3-b7f8-6c2bc2fdb279.webp"
                  width="200" height="200"
-                 alt="Imagen 1 del producto, 200 por 200 píxeles">
-            <figcaption>Imagen 1 — 200 x 200</figcaption>
+                 alt="PC Gamer Ryzen 7 8700">
+            <figcaption>PC Gamer Ryzen 7 8700 — 200 x 200</figcaption>
         </figure>
 
         <figure class="tarjeta-producto">
             <img class="imagen-producto"
-                 src="assets/img/producto-2.svg"
+                 src="assets/img/Chasis_Raidmax_i800_Infinito_Negro.webp"
                  width="200" height="200"
-                 alt="Imagen 2 del producto, 200 por 200 píxeles">
-            <figcaption>Imagen 2 — 200 x 200</figcaption>
+                 alt="Chasis Raidmax i800 Infinito Negro">
+            <figcaption>Chasis Raidmax i800 — 200 x 200</figcaption>
+        </figure>
+
+        <figure class="tarjeta-producto">
+            <img class="imagen-producto"
+                 src="assets/img/BANNER-EQUIPO---CASE.webp"
+                 width="200" height="200"
+                 alt="Banner equipo case">
+            <figcaption>Banner equipo case — 200 x 200</figcaption>
         </figure>
     </div>
 </section>

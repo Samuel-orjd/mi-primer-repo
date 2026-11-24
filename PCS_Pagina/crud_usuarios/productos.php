@@ -3,7 +3,11 @@ require __DIR__ . '/includes/conexion.php';
 
 $categorias = $pdo->query('SELECT id_categoria, nombre FROM categorias ORDER BY nombre')->fetchAll();
 $idsCategoria = array_column($categorias, 'id_categoria');
-$imagenesPorDefecto = ['assets/img/producto-1.svg', 'assets/img/producto-2.svg'];
+$imagenesPorDefecto = [
+    'assets/img/Pc_Gamer_Ryzen_7_8700_598911d6-450a-40d3-b7f8-6c2bc2fdb279.webp',
+    'assets/img/Chasis_Raidmax_i800_Infinito_Negro.webp',
+    'assets/img/BANNER-EQUIPO---CASE.webp',
+];
 
 $errores = [];
 
@@ -14,12 +18,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stock = filter_var($_POST['stock'] ?? '', FILTER_VALIDATE_INT);
     $imagen1 = trim($_POST['imagen1'] ?? '') ?: $imagenesPorDefecto[0];
     $imagen2 = trim($_POST['imagen2'] ?? '') ?: $imagenesPorDefecto[1];
+    $imagen3 = trim($_POST['imagen3'] ?? '') ?: $imagenesPorDefecto[2];
 
     if ($nombre === '') $errores[] = 'El nombre es obligatorio.';
     if (!$idCategoria || !in_array((int) $idCategoria, $idsCategoria, true)) $errores[] = 'Categoría no válida.';
     if ($precio === false || $precio < 0) $errores[] = 'Precio no válido.';
     if ($stock === false || $stock < 0) $errores[] = 'Stock no válido.';
-    if (strlen($imagen1) > 255 || strlen($imagen2) > 255) $errores[] = 'Ruta de imagen demasiado larga.';
+    if (strlen($imagen1) > 255 || strlen($imagen2) > 255 || strlen($imagen3) > 255) $errores[] = 'Ruta de imagen demasiado larga.';
 
     if (empty($errores)) {
         try {
@@ -37,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $idProducto = (int) $pdo->lastInsertId();
 
             $stmtImg = $pdo->prepare('INSERT INTO imagenes_producto (id_producto, url, orden) VALUES (:id, :url, :orden)');
-            foreach ([$imagen1, $imagen2] as $orden => $url) {
+            foreach ([$imagen1, $imagen2, $imagen3] as $orden => $url) {
                 if ($url !== '') {
                     $stmtImg->execute([':id' => $idProducto, ':url' => $url, ':orden' => $orden + 1]);
                 }
@@ -60,7 +65,7 @@ $productos = $pdo->query(
 )->fetchAll();
 
 foreach ($productos as &$p) {
-    $stmtImg = $pdo->prepare('SELECT url FROM imagenes_producto WHERE id_producto = :id ORDER BY orden, id_imagen LIMIT 2');
+    $stmtImg = $pdo->prepare('SELECT url FROM imagenes_producto WHERE id_producto = :id ORDER BY orden, id_imagen LIMIT 3');
     $stmtImg->execute([':id' => $p['id_producto']]);
     $p['imagenes'] = $stmtImg->fetchAll(PDO::FETCH_COLUMN) ?: $imagenesPorDefecto;
 }
@@ -103,12 +108,16 @@ require __DIR__ . '/includes/header.php';
     <h2>Imágenes del producto</h2>
     <div class="espacios-img">
         <figure class="tarjeta-producto">
-            <img class="imagen-producto" src="assets/img/producto-1.svg" width="200" height="200" alt="Imagen 1 del producto">
-            <figcaption>Imagen 1 — 200 x 200</figcaption>
+            <img class="imagen-producto" src="assets/img/Pc_Gamer_Ryzen_7_8700_598911d6-450a-40d3-b7f8-6c2bc2fdb279.webp" width="200" height="200" alt="PC Gamer Ryzen 7 8700">
+            <figcaption>PC Gamer Ryzen 7 8700 — 200 x 200</figcaption>
         </figure>
         <figure class="tarjeta-producto">
-            <img class="imagen-producto" src="assets/img/producto-2.svg" width="200" height="200" alt="Imagen 2 del producto">
-            <figcaption>Imagen 2 — 200 x 200</figcaption>
+            <img class="imagen-producto" src="assets/img/Chasis_Raidmax_i800_Infinito_Negro.webp" width="200" height="200" alt="Chasis Raidmax i800 Infinito Negro">
+            <figcaption>Chasis Raidmax i800 — 200 x 200</figcaption>
+        </figure>
+        <figure class="tarjeta-producto">
+            <img class="imagen-producto" src="assets/img/BANNER-EQUIPO---CASE.webp" width="200" height="200" alt="Banner equipo case">
+            <figcaption>Banner equipo case — 200 x 200</figcaption>
         </figure>
     </div>
 </section>
@@ -170,11 +179,15 @@ require __DIR__ . '/includes/header.php';
         </div>
         <div class="campo">
             <label for="imagen1">Imagen 1 (ruta o URL)</label>
-            <input type="text" id="imagen1" name="imagen1" maxlength="255" placeholder="assets/img/producto-1.svg">
+            <input type="text" id="imagen1" name="imagen1" maxlength="255" placeholder="assets/img/Pc_Gamer_Ryzen_7_8700.webp">
         </div>
         <div class="campo">
             <label for="imagen2">Imagen 2 (ruta o URL)</label>
-            <input type="text" id="imagen2" name="imagen2" maxlength="255" placeholder="assets/img/producto-2.svg">
+            <input type="text" id="imagen2" name="imagen2" maxlength="255" placeholder="assets/img/Chasis_Raidmax_i800_Infinito_Negro.webp">
+        </div>
+        <div class="campo">
+            <label for="imagen3">Imagen 3 (ruta o URL)</label>
+            <input type="text" id="imagen3" name="imagen3" maxlength="255" placeholder="assets/img/BANNER-EQUIPO---CASE.webp">
         </div>
         <div class="botones"><button type="submit" class="btn">Agregar</button></div>
     </form>
