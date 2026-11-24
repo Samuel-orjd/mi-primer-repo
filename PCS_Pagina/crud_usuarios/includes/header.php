@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" data-tema="noche">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -15,14 +15,6 @@
             <a href="index.php">Usuarios</a>
             <a href="productos.php">Productos</a>
             <a href="DASHBOARD.php#contacto">Contacto</a>
-            <label class="tema">
-                <span class="sr-only">Tema</span>
-                <select id="selector-tema" aria-label="Cambiar tema">
-                    <option value="noche">Azul noche</option>
-                    <option value="abismo">Azul abismo</option>
-                    <option value="electrico">Azul eléctrico</option>
-                </select>
-            </label>
         </nav>
     </div>
 </header>

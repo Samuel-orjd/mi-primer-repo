@@ -9,7 +9,6 @@ if (!$id) {
     exit;
 }
 
-// No se carga contrasena_hash: el hash nunca se muestra ni se envía al formulario
 $stmt = $pdo->prepare('SELECT id_usuario, nombre, apellido, correo, telefono, rol FROM usuarios WHERE id_usuario = :id');
 $stmt->execute([':id' => $id]);
 $usuario = $stmt->fetch();
@@ -32,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     foreach ($datos as $campo => $_) {
         $datos[$campo] = trim($_POST[$campo] ?? '');
     }
-    $contrasena = $_POST['contrasena'] ?? '';   // opcional al editar
+    $contrasena = $_POST['contrasena'] ?? '';
 
     if ($datos['nombre'] === '')   $errores[] = 'El nombre es obligatorio.';
     if ($datos['apellido'] === '') $errores[] = 'El apellido es obligatorio.';
@@ -57,7 +56,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ':rol'      => $datos['rol'],
                 ':id'       => $id,
             ];
-            // Solo se cambia la contraseña si se escribió una nueva
             if ($contrasena !== '') {
                 $sql .= ', contrasena_hash = :hash';
                 $params[':hash'] = password_hash($contrasena, PASSWORD_DEFAULT);

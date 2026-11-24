@@ -1,9 +1,9 @@
 <?php
-// Inventario simple de productos: monitoreo + alta mínima.
 require __DIR__ . '/includes/conexion.php';
 
 $categorias = $pdo->query('SELECT id_categoria, nombre FROM categorias ORDER BY nombre')->fetchAll();
 $idsCategoria = array_column($categorias, 'id_categoria');
+$imagenesPorDefecto = ['assets/img/producto-1.svg', 'assets/img/producto-2.svg'];
 
 $errores = [];
 
@@ -12,8 +12,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $idCategoria = filter_var($_POST['id_categoria'] ?? null, FILTER_VALIDATE_INT);
     $precio = filter_var($_POST['precio'] ?? '', FILTER_VALIDATE_FLOAT);
     $stock = filter_var($_POST['stock'] ?? '', FILTER_VALIDATE_INT);
-    $imagen1 = trim($_POST['imagen1'] ?? '');
-    $imagen2 = trim($_POST['imagen2'] ?? '');
+    $imagen1 = trim($_POST['imagen1'] ?? '') ?: $imagenesPorDefecto[0];
+    $imagen2 = trim($_POST['imagen2'] ?? '') ?: $imagenesPorDefecto[1];
 
     if ($nombre === '') $errores[] = 'El nombre es obligatorio.';
     if (!$idCategoria || !in_array((int) $idCategoria, $idsCategoria, true)) $errores[] = 'Categoría no válida.';
@@ -62,7 +62,7 @@ $productos = $pdo->query(
 foreach ($productos as &$p) {
     $stmtImg = $pdo->prepare('SELECT url FROM imagenes_producto WHERE id_producto = :id ORDER BY orden, id_imagen LIMIT 2');
     $stmtImg->execute([':id' => $p['id_producto']]);
-    $p['imagenes'] = $stmtImg->fetchAll(PDO::FETCH_COLUMN);
+    $p['imagenes'] = $stmtImg->fetchAll(PDO::FETCH_COLUMN) ?: $imagenesPorDefecto;
 }
 unset($p);
 
@@ -100,7 +100,7 @@ require __DIR__ . '/includes/header.php';
 </section>
 
 <section id="consolas">
-    <h2>Vista previa (cambia el src por tus imágenes 200x200)</h2>
+    <h2>Imágenes del producto</h2>
     <div class="espacios-img">
         <figure class="tarjeta-producto">
             <img class="imagen-producto" src="assets/img/producto-1.svg" width="200" height="200" alt="Imagen 1 del producto">
@@ -170,11 +170,11 @@ require __DIR__ . '/includes/header.php';
         </div>
         <div class="campo">
             <label for="imagen1">Imagen 1 (ruta o URL)</label>
-            <input type="text" id="imagen1" name="imagen1" maxlength="255" placeholder="assets/img/mi-pc-1.jpg">
+            <input type="text" id="imagen1" name="imagen1" maxlength="255" placeholder="assets/img/producto-1.svg">
         </div>
         <div class="campo">
             <label for="imagen2">Imagen 2 (ruta o URL)</label>
-            <input type="text" id="imagen2" name="imagen2" maxlength="255" placeholder="assets/img/mi-pc-2.jpg">
+            <input type="text" id="imagen2" name="imagen2" maxlength="255" placeholder="assets/img/producto-2.svg">
         </div>
         <div class="botones"><button type="submit" class="btn">Agregar</button></div>
     </form>

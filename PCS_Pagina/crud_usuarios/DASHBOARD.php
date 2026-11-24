@@ -1,8 +1,4 @@
 <?php
-// =====================================================================
-//  Panel de control: usuarios + monitoreo de productos
-//  Todas las consultas van antes de imprimir HTML.
-// =====================================================================
 require __DIR__ . '/includes/conexion.php';
 
 $totalUsuarios = (int) $pdo->query('SELECT COUNT(*) FROM usuarios')->fetchColumn();
@@ -17,6 +13,14 @@ $productos = $pdo->query(
      INNER JOIN categorias c ON c.id_categoria = p.id_categoria
      ORDER BY p.stock ASC, p.id_producto DESC'
 )->fetchAll();
+
+$imagenesPorDefecto = ['assets/img/producto-1.svg', 'assets/img/producto-2.svg'];
+foreach ($productos as &$p) {
+    $stmtImg = $pdo->prepare('SELECT url FROM imagenes_producto WHERE id_producto = :id ORDER BY orden, id_imagen LIMIT 2');
+    $stmtImg->execute([':id' => $p['id_producto']]);
+    $p['imagenes'] = $stmtImg->fetchAll(PDO::FETCH_COLUMN) ?: $imagenesPorDefecto;
+}
+unset($p);
 
 $usuariosRecientes = $pdo->query(
     'SELECT id_usuario, nombre, apellido, correo, rol, fecha_registro
@@ -67,12 +71,13 @@ require __DIR__ . '/includes/header.php';
     </div>
 
     <?php if (empty($productos)): ?>
-        <div class="vacio">No hay productos registrados todavía. Crea el primero con el botón «Nuevo producto».</div>
+        <div class="vacio">No hay productos registrados todavía. Crea el primero desde el inventario.</div>
     <?php else: ?>
         <table>
             <thead>
                 <tr>
                     <th>ID</th>
+                    <th>Imágenes</th>
                     <th>Producto</th>
                     <th>Categoría</th>
                     <th>Precio</th>
@@ -86,6 +91,11 @@ require __DIR__ . '/includes/header.php';
                 <?php $stockBajoFila = (int) $p['stock'] <= 5; ?>
                 <tr>
                     <td><?= (int) $p['id_producto'] ?></td>
+                    <td>
+                        <?php foreach ($p['imagenes'] as $url): ?>
+                            <img class="thumb" src="<?= htmlspecialchars($url) ?>" alt="Imagen de <?= htmlspecialchars($p['nombre']) ?>">
+                        <?php endforeach; ?>
+                    </td>
                     <td>
                         <strong><?= htmlspecialchars($p['nombre']) ?></strong>
                         <?php if (!empty($p['marca'])): ?>
@@ -121,13 +131,10 @@ require __DIR__ . '/includes/header.php';
 <section id="consolas">
     <div class="barra">
         <h2>PCs y consolas en venta</h2>
-        <span class="ayuda">Reemplaza la ruta <code>src</code> de cada imagen por la tuya (200 x 200 px).</span>
     </div>
 
-    <!-- Espacios listos para tus 2 imágenes de 200x200 -->
     <div class="espacios-img">
         <figure class="tarjeta-producto">
-            <!-- IMG 1: cambia src="assets/img/producto-1.svg" por tu imagen -->
             <img class="imagen-producto"
                  src="assets/img/producto-1.svg"
                  width="200" height="200"
@@ -136,7 +143,6 @@ require __DIR__ . '/includes/header.php';
         </figure>
 
         <figure class="tarjeta-producto">
-            <!-- IMG 2: cambia src="assets/img/producto-2.svg" por tu imagen -->
             <img class="imagen-producto"
                  src="assets/img/producto-2.svg"
                  width="200" height="200"

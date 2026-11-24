@@ -1,15 +1,9 @@
 ﻿<?php
-// =====================================================================
-//  Conexión a la base de datos pcs_pagina
-//  Todos los archivos PHP del CRUD usan este archivo con require.
-// =====================================================================
-
-// Configuración por defecto de XAMPP
 $host    = 'localhost';
-$puerto  = '3306';          // Si tu MySQL de XAMPP usa otro puerto, cámbialo aquí
+$puerto  = '3306';
 $db      = 'pcs_pagina';
 $usuario = 'root';
-$clave   = '';              // XAMPP trae el usuario root sin contraseña
+$clave   = '';
 $charset = 'utf8mb4';
 
 $dsn = "mysql:host=$host;port=$puerto;dbname=$db;charset=$charset";
@@ -23,7 +17,6 @@ $opciones = [
 try {
     $pdo = new PDO($dsn, $usuario, $clave, $opciones);
 } catch (PDOException $e) {
-    // Mensaje claro según la causa más común
     $detalle = $e->getMessage();
 
     if (strpos($detalle, '1049') !== false) {
@@ -46,4 +39,3 @@ try {
     require __DIR__ . '/footer.php';
     exit;
 }
-

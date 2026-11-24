@@ -7,13 +7,11 @@ $usuarios = $pdo->query(
      ORDER BY id_usuario DESC'
 )->fetchAll();
 
-// Mensajes de éxito
 $mensajes = [
     'creado'      => 'Usuario creado correctamente.',
     'actualizado' => 'Usuario actualizado correctamente.',
     'eliminado'   => 'Usuario eliminado correctamente.',
 ];
-// Mensajes de error (se muestran con otro estilo)
 $mensajes_error = [
     'error_relaciones' => 'No se puede eliminar: el usuario tiene direcciones, carritos, pedidos o reseñas asociados.',
     'error_no_existe'  => 'El usuario que intentas eliminar ya no existe.',

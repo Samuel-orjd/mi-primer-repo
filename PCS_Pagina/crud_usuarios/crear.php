@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     foreach ($datos as $campo => $_) {
         $datos[$campo] = trim($_POST[$campo] ?? '');
     }
-    $contrasena = $_POST['contrasena'] ?? '';   // la contraseña no se recorta con trim
+    $contrasena = $_POST['contrasena'] ?? '';
 
     if ($datos['nombre'] === '')   $errores[] = 'El nombre es obligatorio.';
     if ($datos['apellido'] === '') $errores[] = 'El apellido es obligatorio.';
@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ':nombre'   => $datos['nombre'],
                 ':apellido' => $datos['apellido'],
                 ':correo'   => $datos['correo'],
-                ':hash'     => password_hash($contrasena, PASSWORD_DEFAULT), // bcrypt, nunca texto plano
+                ':hash'     => password_hash($contrasena, PASSWORD_DEFAULT),
                 ':telefono' => $datos['telefono'] !== '' ? $datos['telefono'] : null,
                 ':rol'      => $datos['rol'],
             ]);
