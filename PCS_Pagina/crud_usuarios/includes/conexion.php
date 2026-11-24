@@ -6,7 +6,7 @@
 
 // Configuración por defecto de XAMPP
 $host    = 'localhost';
-$puerto  = '3306';          // Si tu MySQL de XAMPP usa otro puerto, cámbialo aquí
+$puerto  = '3304';          // Si tu MySQL de XAMPP usa otro puerto, cámbialo aquí
 $db      = 'pcs_pagina';
 $usuario = 'root';
 $clave   = '';              // XAMPP trae el usuario root sin contraseña

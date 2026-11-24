@@ -32,7 +32,10 @@ require __DIR__ . '/includes/header.php';
 
 <div class="barra">
     <h2>Listado de usuarios (<?= count($usuarios) ?>)</h2>
-    <a class="btn" href="crear.php">Nuevo usuario</a>
+    <div>
+        <a class="btn btn-claro" href="DASHBOARD.php">Ir al dashboard</a>
+        <a class="btn" href="crear.php">Nuevo usuario</a>
+    </div>
 </div>
 
 <?php if (empty($usuarios)): ?>
