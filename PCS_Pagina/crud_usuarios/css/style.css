@@ -66,3 +66,59 @@ form.formulario { max-width: 480px; }
 .ayuda { display: block; margin-top: 4px; color: #555555; font-size: 13px; }
 .botones { display: flex; gap: 10px; margin-top: 20px; }
 .vacio { padding: 20px; border: 1px dashed #111111; text-align: center; }
+
+/* =====================================================================
+   Panel / dashboard
+   ===================================================================== */
+
+.encabezado .barra { margin-bottom: 0; }
+
+.nav { display: flex; gap: 14px; flex-wrap: wrap; }
+.nav a { color: #111111; text-decoration: none; font-weight: 600; }
+.nav a:hover, .nav a.activo { text-decoration: underline; }
+
+section { margin-bottom: 32px; }
+
+.tarjetas {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 28px;
+}
+
+.tarjeta { border: 1px solid #111111; padding: 16px; }
+.tarjeta h3 { margin: 0 0 8px; font-size: 15px; }
+.kpi { margin: 0; font-size: 32px; font-weight: 700; line-height: 1.1; }
+.enlace { display: inline-block; margin-top: 8px; font-size: 13px; color: #111111; }
+
+.estado {
+    display: inline-block;
+    padding: 2px 8px;
+    border: 1px solid #111111;
+    font-size: 12px;
+    margin-right: 4px;
+}
+.estado.inactivo { background: #111111; color: #ffffff; }
+.estado.destacado { border-style: dashed; }
+
+.stock-bajo { background: #ffe9e9; font-weight: 700; }
+.alerta {
+    display: inline-block;
+    margin-left: 6px;
+    padding: 1px 6px;
+    background: #111111;
+    color: #ffffff;
+    font-size: 11px;
+}
+
+.btn.disabled { opacity: 0.45; cursor: not-allowed; pointer-events: none; }
+
+.tarjeta-producto { border: 1px solid #111111; padding: 12px; }
+.tarjeta-producto figure { margin: 0; }
+.imagen-producto { max-width: 100%; height: auto; display: block; background: #f2f2f2; }
+.tarjeta-producto figcaption { margin-top: 8px; font-size: 13px; }
+
+@media (max-width: 600px) {
+    .barra { flex-direction: column; align-items: flex-start; gap: 10px; }
+    .nav { gap: 10px; }
+}

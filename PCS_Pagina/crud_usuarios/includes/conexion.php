@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 // =====================================================================
 //  Conexión a la base de datos pcs_pagina
 //  Todos los archivos PHP del CRUD usan este archivo con require.
@@ -6,7 +6,7 @@
 
 // Configuración por defecto de XAMPP
 $host    = 'localhost';
-$puerto  = '3304';          // Si tu MySQL de XAMPP usa otro puerto, cámbialo aquí
+$puerto  = '3306';          // Si tu MySQL de XAMPP usa otro puerto, cámbialo aquí
 $db      = 'pcs_pagina';
 $usuario = 'root';
 $clave   = '';              // XAMPP trae el usuario root sin contraseña
@@ -46,3 +46,4 @@ try {
     require __DIR__ . '/footer.php';
     exit;
 }
+
