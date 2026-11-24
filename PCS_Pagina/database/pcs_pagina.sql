@@ -213,3 +213,35 @@ SELECT p.id_producto, 'assets/img/BANNER-EQUIPO---CASE.webp', 3
 FROM productos p
 WHERE p.nombre = 'PC Gamer Ryzen 7 8700'
   AND NOT EXISTS (SELECT 1 FROM imagenes_producto i WHERE i.id_producto = p.id_producto AND i.url = 'assets/img/BANNER-EQUIPO---CASE.webp');
+UPDATE productos
+SET descripcion = (SELECT c.descripcion FROM categorias c WHERE c.id_categoria = productos.id_categoria),
+    procesador = CASE nombre WHEN 'PC Gamer Ryzen 7 8700' THEN 'AMD Ryzen 7 8700' ELSE procesador END
+WHERE nombre IN ('PC Gamer Ryzen 7 8700', 'Chasis Raidmax i800 Infinito Negro', 'Banner Equipo Case');
+
+INSERT INTO productos (id_categoria, nombre, marca, procesador, descripcion, precio, stock, activo)
+SELECT 1, 'Chasis Raidmax i800 Infinito Negro', 'Raidmax', NULL, c.descripcion, 89.00, 12, 1
+FROM categorias c
+WHERE c.id_categoria = 1
+  AND NOT EXISTS (SELECT 1 FROM productos WHERE nombre = 'Chasis Raidmax i800 Infinito Negro');
+
+INSERT INTO productos (id_categoria, nombre, marca, procesador, descripcion, precio, stock, activo)
+SELECT 4, 'Banner Equipo Case', 'PCS', NULL, c.descripcion, 1299.00, 2, 1
+FROM categorias c
+WHERE c.id_categoria = 4
+  AND NOT EXISTS (SELECT 1 FROM productos WHERE nombre = 'Banner Equipo Case');
+
+DELETE FROM imagenes_producto
+WHERE id_producto = (SELECT id_producto FROM productos WHERE nombre = 'PC Gamer Ryzen 7 8700')
+  AND url IN ('assets/img/Chasis_Raidmax_i800_Infinito_Negro.webp', 'assets/img/BANNER-EQUIPO---CASE.webp');
+
+INSERT INTO imagenes_producto (id_producto, url, orden)
+SELECT p.id_producto, 'assets/img/Chasis_Raidmax_i800_Infinito_Negro.webp', 1
+FROM productos p
+WHERE p.nombre = 'Chasis Raidmax i800 Infinito Negro'
+  AND NOT EXISTS (SELECT 1 FROM imagenes_producto i WHERE i.id_producto = p.id_producto AND i.url = 'assets/img/Chasis_Raidmax_i800_Infinito_Negro.webp');
+
+INSERT INTO imagenes_producto (id_producto, url, orden)
+SELECT p.id_producto, 'assets/img/BANNER-EQUIPO---CASE.webp', 1
+FROM productos p
+WHERE p.nombre = 'Banner Equipo Case'
+  AND NOT EXISTS (SELECT 1 FROM imagenes_producto i WHERE i.id_producto = p.id_producto AND i.url = 'assets/img/BANNER-EQUIPO---CASE.webp');

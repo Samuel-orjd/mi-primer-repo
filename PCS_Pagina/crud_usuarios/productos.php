@@ -16,6 +16,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $idCategoria = filter_var($_POST['id_categoria'] ?? null, FILTER_VALIDATE_INT);
     $precio = filter_var($_POST['precio'] ?? '', FILTER_VALIDATE_FLOAT);
     $stock = filter_var($_POST['stock'] ?? '', FILTER_VALIDATE_INT);
+    $procesador = trim($_POST['procesador'] ?? '');
+    $descripcion = trim($_POST['descripcion'] ?? '');
     $imagen1 = trim($_POST['imagen1'] ?? '') ?: $imagenesPorDefecto[0];
     $imagen2 = trim($_POST['imagen2'] ?? '') ?: $imagenesPorDefecto[1];
     $imagen3 = trim($_POST['imagen3'] ?? '') ?: $imagenesPorDefecto[2];
@@ -24,18 +26,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!$idCategoria || !in_array((int) $idCategoria, $idsCategoria, true)) $errores[] = 'Categoría no válida.';
     if ($precio === false || $precio < 0) $errores[] = 'Precio no válido.';
     if ($stock === false || $stock < 0) $errores[] = 'Stock no válido.';
+    if (strlen($procesador) > 80 || strlen($descripcion) > 500) $errores[] = 'Texto demasiado largo.';
     if (strlen($imagen1) > 255 || strlen($imagen2) > 255 || strlen($imagen3) > 255) $errores[] = 'Ruta de imagen demasiado larga.';
 
     if (empty($errores)) {
         try {
             $pdo->beginTransaction();
             $stmt = $pdo->prepare(
-                'INSERT INTO productos (id_categoria, nombre, precio, stock, activo)
-                 VALUES (:cat, :nombre, :precio, :stock, 1)'
+                'INSERT INTO productos (id_categoria, nombre, procesador, descripcion, precio, stock, activo)
+                 VALUES (:cat, :nombre, :procesador, :descripcion, :precio, :stock, 1)'
             );
             $stmt->execute([
                 ':cat' => (int) $idCategoria,
                 ':nombre' => $nombre,
+                ':procesador' => $procesador,
+                ':descripcion' => $descripcion,
                 ':precio' => $precio,
                 ':stock' => (int) $stock,
             ]);
@@ -59,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $msg = $_GET['msg'] ?? '';
 $productos = $pdo->query(
-    'SELECT p.id_producto, p.nombre, p.precio, p.stock, p.activo, c.nombre AS categoria
+    'SELECT p.id_producto, p.nombre, p.procesador, p.descripcion, p.precio, p.stock, p.activo, c.nombre AS categoria
      FROM productos p INNER JOIN categorias c ON c.id_categoria = p.id_categoria
      ORDER BY p.stock ASC, p.id_producto DESC'
 )->fetchAll();
@@ -128,7 +133,7 @@ require __DIR__ . '/includes/header.php';
         <div class="vacio">El inventario está vacío. Agrega el primer producto abajo.</div>
     <?php else: ?>
         <table>
-            <thead><tr><th>ID</th><th>Imágenes</th><th>Producto</th><th>Categoría</th><th>Precio</th><th>Stock</th><th>Estado</th></tr></thead>
+            <thead><tr><th>ID</th><th>Imágenes</th><th>Producto</th><th>Procesador</th><th>Descripción</th><th>Categoría</th><th>Precio</th><th>Stock</th><th>Estado</th></tr></thead>
             <tbody>
             <?php foreach ($productos as $p): ?>
                 <tr>
@@ -139,6 +144,8 @@ require __DIR__ . '/includes/header.php';
                         <?php endforeach; ?>
                     </td>
                     <td><strong><?= htmlspecialchars($p['nombre']) ?></strong></td>
+                    <td><?= htmlspecialchars($p['procesador'] ?? '') ?></td>
+                    <td><?= htmlspecialchars($p['descripcion'] ?? '') ?></td>
                     <td><?= htmlspecialchars($p['categoria']) ?></td>
                     <td>$ <?= number_format((float) $p['precio'], 2, ',', '.') ?></td>
                     <td class="<?= (int) $p['stock'] <= 5 ? 'stock-bajo' : '' ?>">
@@ -176,6 +183,14 @@ require __DIR__ . '/includes/header.php';
         <div class="campo">
             <label for="stock">Stock</label>
             <input type="number" id="stock" name="stock" step="1" min="0" value="0" required>
+        </div>
+        <div class="campo">
+            <label for="procesador">Procesador</label>
+            <input type="text" id="procesador" name="procesador" maxlength="80">
+        </div>
+        <div class="campo">
+            <label for="descripcion">Descripción</label>
+            <textarea id="descripcion" name="descripcion" maxlength="500"></textarea>
         </div>
         <div class="campo">
             <label for="imagen1">Imagen 1 (ruta o URL)</label>

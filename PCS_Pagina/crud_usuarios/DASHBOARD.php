@@ -7,7 +7,7 @@ $stockBajo = (int) $pdo->query('SELECT COUNT(*) FROM productos WHERE activo = 1 
 $pedidosPendientes = (int) $pdo->query("SELECT COUNT(*) FROM pedidos WHERE estado = 'pendiente'")->fetchColumn();
 
 $productos = $pdo->query(
-    'SELECT p.id_producto, p.nombre, p.marca, p.precio, p.stock, p.activo, p.destacado,
+    'SELECT p.id_producto, p.nombre, p.marca, p.procesador, p.descripcion, p.precio, p.stock, p.activo, p.destacado,
             c.nombre AS categoria
      FROM productos p
      INNER JOIN categorias c ON c.id_categoria = p.id_categoria
@@ -83,6 +83,8 @@ require __DIR__ . '/includes/header.php';
                     <th>ID</th>
                     <th>Imágenes</th>
                     <th>Producto</th>
+                    <th>Procesador</th>
+                    <th>Descripción</th>
                     <th>Categoría</th>
                     <th>Precio</th>
                     <th>Stock</th>
@@ -106,6 +108,8 @@ require __DIR__ . '/includes/header.php';
                             <br><small><?= htmlspecialchars($p['marca']) ?></small>
                         <?php endif; ?>
                     </td>
+                    <td><?= htmlspecialchars($p['procesador'] ?? '') ?></td>
+                    <td><?= htmlspecialchars($p['descripcion'] ?? '') ?></td>
                     <td><?= htmlspecialchars($p['categoria']) ?></td>
                     <td>$ <?= number_format((float) $p['precio'], 2, ',', '.') ?></td>
                     <td class="<?= $stockBajoFila ? 'stock-bajo' : '' ?>">
