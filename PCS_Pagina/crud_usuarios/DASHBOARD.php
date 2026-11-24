@@ -33,8 +33,7 @@ require __DIR__ . '/includes/header.php';
     <h2>Panel de control</h2>
     <div>
         <a class="btn btn-claro" href="index.php">Usuarios</a>
-        <a class="btn btn-claro" href="productos.php">Productos</a>
-        <a class="btn" href="crear_producto.php">Nuevo producto</a>
+        <a class="btn" href="productos.php">Inventario</a>
     </div>
 </section>
 
@@ -64,7 +63,7 @@ require __DIR__ . '/includes/header.php';
 <section id="productos">
     <div class="barra">
         <h2>Monitoreo de productos</h2>
-        <a class="btn btn-claro btn-sm" href="crear_producto.php">Nuevo producto</a>
+        <a class="btn btn-claro btn-sm" href="productos.php">Ver inventario</a>
     </div>
 
     <?php if (empty($productos)): ?>
@@ -110,12 +109,7 @@ require __DIR__ . '/includes/header.php';
                         <?php endif; ?>
                     </td>
                     <td class="acciones">
-                        <a class="btn btn-claro btn-sm" href="editar_producto.php?id=<?= (int) $p['id_producto'] ?>">Editar</a>
-                        <form method="post" action="eliminar_producto.php"
-                              onsubmit="return confirm('¿Eliminar este producto?');">
-                            <input type="hidden" name="id" value="<?= (int) $p['id_producto'] ?>">
-                            <button type="submit" class="btn btn-sm">Eliminar</button>
-                        </form>
+                        <a class="btn btn-claro btn-sm" href="productos.php">Inventario</a>
                     </td>
                 </tr>
             <?php endforeach; ?>
